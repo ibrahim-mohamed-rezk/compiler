@@ -1,0 +1,5 @@
+program -> declaration_list
+declaration_list -> declaration | declaration_list declaration
+declaration -> type_specifier identifier_list SEMICOLON
+type_specifier -> INT | FLOAT | CHAR | BOOL
+identifier_list -> IDENTIFIER | identifier_list COMMA IDENTIFIER
