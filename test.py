@@ -1,45 +1,50 @@
-def calculate_first(grammar):
-    first_sets = {}  # Dictionary to store First sets for each non-terminal
+import re
 
-    # Initialize First sets with empty sets for each non-terminal
-    for non_terminal in grammar.non_terminals:
-        first_sets[non_terminal] = set()
+code = open("code.txt", "r").read()
 
-    # Iterate through each production rule
-    for rule in grammar.rules:
-        non_terminal = rule.non_terminal
-        symbols = rule.symbols
+TYPES = {
+    'keyword': r'\b(print|int|float|if|char)\b',
+    'number': r'\b\d+\b',
+    'string': r'"[^"]*"',
+    'id': r'\b[a-zA-Z][a-zA-Z0-9]*\b'
+}
 
-        # Call a recursive function to compute First set for the current rule
-        compute_first(first_sets, symbols)
+tokens = []
+patterns = '|'.join(f'(?P<{type}>{pattern})' for type, pattern in TYPES.items())
+patterns = '|'.join(f'(?P<{type}>{pattern})' for type, pattern in TYPES.items())
+for match in re.finditer(patterns, code):
+    t_type = match.lastgroup
+    t_value = match.group(t_type)
+    tokens.append((t_type, t_value))
 
-    return first_sets
+print(tokens)
 
-def compute_first(first_sets, symbols):
-    # Implement recursive logic to compute First set for symbols
-    pass
 
-# Example usage
-class ProductionRule:
-    def __init__(self, non_terminal, symbols):
-        self.non_terminal = non_terminal
-        self.symbols = symbols
+print("\n")
 
-class Grammar:
-    def __init__(self, rules, non_terminals):
-        self.rules = rules
-        self.non_terminals = non_terminals
+# lines = code.split("\n")
 
-# Example grammar
-rules = [
-    ProductionRule('A', ['a', 'B', 'c']),
-    ProductionRule('B', ['b', 'C']),
-    # Add more production rules here
-]
+# for line_num , line in enumerate(lines, start=1):
+#     if not line.strip():
+#         continue
 
-non_terminals = ['A', 'B', 'C']  # List of non-terminal symbols
-
-grammar = Grammar(rules, non_terminals)
-
-first_sets = calculate_first(grammar)
-print(first_sets)
+#     match_dec = re.match(r'^\s*(int|float|char|bool)\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*(?:=\s*(.*?))?;', line)
+    
+#     if match_dec :
+#         v_type = match_dec.group(1)
+#         v_name = match_dec.group(2)
+#         v_value = match_dec.group(3)
+#         print("Declaration")
+#         print(v_name)
+#         print(v_type)
+#         print(v_value)
+#         print(";")
+#     else:
+#         match_assign = re.match(r'^\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*(.*)', line)
+#         if match_assign:
+#             v_name = match_assign.group(1)
+#             v_value = match_assign.group(2)
+#             print("Assignment")
+#             print(v_name)
+#             print(v_value)
+#             print(";")
